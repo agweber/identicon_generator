@@ -7,11 +7,23 @@
 from random import randint, shuffle
 
 def generate_identicon(fill="X", empty=" ", height=10, width=9, fill_percent=.4, spacing=1.5):
+    """
+    Args:
+      fill (Optional[str]): The string to use for the fill of each cell of the icon.
+      empty (Optional[str]): The string to use for the each cell of the icon when empty
+      height (Optional[int]): The height of the icon
+      width (Optional[int]): The width of the icon
+      fill_percent (Optional[float]): Percentage (0-1) of the icon that will be filled
+      spacing (Optional[float]): Ratio of blank cells to filled cells around each cell. Acceptable values 0-7
+    Returns:
+      str: A string output, including newlines, that represents the identicon. Can be printed to console, or, in the
+        future, sent to a separate function to turn it into an image.
+    """
     half_width = int((width + 1) / 2)  # +1 to round up (e.g. 9 width = 5 half_width) so we have a center column
     painted = 0
     max_painted = height * half_width * fill_percent
     adjacent = [(-1,-1), (-1,0), (-1,1), (0,1), (0,-1), (1,-1), (1,0), (1,1)]
-    # initialize a blank identicon
+    # initialize a blank identicon (in this case a 2D array of cells)
     identicon = [[empty for w in range(half_width)] for h in range(height)]
     # 'paint' a single cell and add it to the stack
     y, x = randint(0, height - 1), randint(0, half_width - 1)
@@ -44,7 +56,7 @@ def generate_identicon(fill="X", empty=" ", height=10, width=9, fill_percent=.4,
                 # if we do fill it, append empty cells to our search list
                 lst.extend(empty_adjacent)
 
-    # generate the string output
+    # Stringify the 2D array and mirror results
     output = ""
     for h in range(height):
         for w in range(half_width):
@@ -55,4 +67,4 @@ def generate_identicon(fill="X", empty=" ", height=10, width=9, fill_percent=.4,
         output += "\n"
     return output
 
-print(generate_identicon("[]", "  "))
+print(generate_identicon("[]", "  ", fill_percent=.4, spacing=1.5))
